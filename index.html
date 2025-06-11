@@ -1,0 +1,120 @@
+
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <title>CSV Редактор</title>
+    <link rel="icon" href="/static/favicon.ico" type="image/x-icon">
+    <link rel="stylesheet" href="/static/style.css">
+    <style>
+        html, body {
+            margin: 0;
+            padding: 0;
+            height: 100%;
+            overflow: hidden;
+        }
+        body {
+            display: flex;
+        }
+        #main-container {
+            flex: 1;
+            display: flex;
+            flex-direction: column;
+            width: 100%;
+        }
+    </style>
+</head>
+<body>
+
+<!-- Sidebar -->
+<div id="sidebar" class="sidebar">
+  <button onclick="changeFontSize(1)">A➕</button>
+  <button onclick="changeFontSize(-1)">A➖</button>
+  <button onclick="toggleBold()">B</button>
+  <button onclick="toggleItalic()">I</button>
+  <button onclick="toggleUnderline()">⎁</button>
+  <button onclick="alignText('left')">⬅️</button>
+  <button onclick="alignText('center')">↔️</button>
+  <button onclick="alignText('right')">➡️</button>
+  
+  <button onclick="resetFormatting()">♻️</button>
+</div>
+
+<!-- Main content -->
+<div id="main-container">
+    <div class="toolbar">
+        <button id="btn-open" title="Открыть CSV">📁</button>
+        <button id="btn-save" title="Сохранить">💾</button>
+        <button id="btn-revert" title="Откатить изменения">♻️</button>
+        <button id="btn-toggle-lock" title="Заблокировать/разблокировать ячейку">🔒</button>
+        <button onclick="undo()" title="Отменить действие">↶</button>
+        <button onclick="redo()" title="Повторить действие">↷</button>
+        <button id="btn-add-col" title="Добавить столбец">➕📊</button>
+        <button id="btn-del-col" title="Удалить столбец">❌📊</button>
+        <button id="btn-add-row" title="Добавить строку">➕📄</button>
+        <button id="btn-del-row" title="Удалить строку">❌📄</button>
+        <input type="text" id="search" placeholder="🔍 Поиск..." title="Найти в таблице">
+        <span id="searchCount" style="color:gray;font-size:12px;padding-left:5px;">0 результатов</span>
+        <button onclick="prevSearchResult()" title="Назад">↑</button>
+        <button onclick="nextSearchResult()" title="Вперёд">↓</button>
+        <button id="btn-theme" title="Сменить тему">🌙</button>
+        <button id="btn-help" title="Справка">❓</button>
+    </div>
+
+    <div id="editor-container">
+        <table id="csvTable"></table>
+    </div>
+</div>
+
+<!-- File Explorer -->
+<div id="fileExplorerModal" class="modal hidden">
+  <div class="modal-content explorer">
+    <div class="explorer-header">
+      <button id="btnGoUp" title="Назад">⬆️</button>
+      <span id="currentPath">documents/</span>
+    </div>
+    <div id="fileExplorerList" class="explorer-list"></div>
+    <div class="explorer-footer">
+      <span id="emptyMessage" style="display:none;">Папка пуста</span>
+    </div>
+  </div>
+</div>
+
+<!-- FAQ -->
+<div id="helpModal" class="modal hidden">
+  <div class="modal-content">
+    <span id="closeHelp" class="close-button">&times;</span>
+    <h2>Справка по кнопкам</h2>
+    <ul>
+      <li>📁 — открыть CSV</li>
+      <li>💾 — сохранить</li>
+      <li>♻️ — откат</li>
+      <li>🔒 — заблокировать ячейку</li>
+      <li>↶/↷ — отменить/повторить</li>
+      <li>➕📄 — добавить строку</li>
+      <li>❌📄 — удалить строку</li>
+      <li>➕📊 — добавить столбец</li>
+      <li>❌📊 — удалить столбец</li>
+      <li>🔍 — поиск, ↑↓ — переход между совпадениями</li>
+    
+    <li><b>Горячие клавиши:</b></li>
+    <li>Ctrl+F — найти</li>
+    <li>Esc — сброс поиска</li>
+    <li>Ctrl+↑ / ↓ — поиск вперёд/назад</li>
+    <li>Ctrl+L — заблокировать ячейку</li>
+    <li>Ctrl+B / I / U — жирный / курсив / подчёркнутый</li>
+    
+    <li><b>Доп. горячие клавиши:</b></li>
+    <li>Ctrl+S — сохранить</li>
+    <li>Ctrl+O — открыть файл</li>
+    <li>Ctrl+Z / Y — откат / повтор</li>
+    <li>Ctrl+A / D — добавить / удалить строку</li>
+    <li>Ctrl+E / R — добавить / удалить столбец</li>
+    <li>Ctrl+? — открыть справку</li>
+    </ul>
+  </div>
+</div>
+
+<script src="/static/editor.js"></script>
+</body>
+</html>
